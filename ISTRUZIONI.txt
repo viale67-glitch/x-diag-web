@@ -1,0 +1,9 @@
+X DIAG — PACCHETTO PWA CON ICONA
+
+Questo pacchetto è predisposto per essere installato come app web (PWA) con icona X DIAG.
+
+IMPORTANTE: non basta aprire index.html dalla cartella Download. Per installarlo occorre pubblicare TUTTI i file di questa cartella su un sito HTTPS. Poi aprire l'indirizzo HTTPS in Chrome sul tablet e scegliere Installa app oppure Aggiungi a schermata Home.
+
+La pubblicazione del programma non attiva la sincronizzazione tra dispositivi: l'archivio di questa versione resta locale al browser/dispositivo. Prima di usare dati reali, conservare un backup.
+
+Non contiene un APK Android nativo; è una PWA installabile tramite browser dopo la pubblicazione HTTPS.

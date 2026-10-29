@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#168cff">
+<link rel="manifest" href="./manifest.webmanifest">
+<title>X DIAG - App diagnosi auto</title>
+<style>
+:root{--bg:#0d141b;--panel:#151f29;--panel2:#1c2a36;--line:#304252;--text:#eef4f8;--muted:#a7b7c4;--accent:#168cff;--accent2:#62c6ff;--green:#51d6a3}
+*{box-sizing:border-box}body{margin:0;background:linear-gradient(145deg,#0b1117,#101c27 65%,#18222b);color:var(--text);font:15px/1.45 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+header{padding:20px clamp(14px,4vw,38px);border-bottom:1px solid var(--line);background:#101820ee;position:sticky;top:0;z-index:5;backdrop-filter:blur(10px)}
+.brand{display:flex;align-items:center;gap:13px;max-width:1200px;margin:auto}.logo{width:52px;height:52px;border-radius:14px;background:linear-gradient(135deg,var(--accent),#c82e19);display:grid;place-items:center;font-size:27px;box-shadow:0 8px 28px #168cff2e}.brand h1{font-size:clamp(19px,3vw,27px);margin:0;letter-spacing:.3px}.brand p{margin:2px 0 0;color:var(--muted);font-size:12px;letter-spacing:1.2px;text-transform:uppercase}
+main{max-width:1200px;margin:24px auto;padding:0 14px 45px}.hero{padding:22px;border:1px solid #17486d;border-radius:20px;background:linear-gradient(110deg,#102b43,#17232d 70%);display:flex;justify-content:space-between;align-items:center;gap:18px;margin-bottom:18px}.hero h2{font-size:clamp(22px,4vw,34px);margin:0 0 5px}.hero p{color:var(--muted);margin:0;max-width:620px}.tag{color:#c6e8ff;border:1px solid #23679a;border-radius:999px;padding:7px 11px;font-size:12px;white-space:nowrap}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:18px 0}.stat,.panel{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:17px}.stat span{display:block;color:var(--muted);font-size:12px}.stat strong{display:block;font-size:25px;margin-top:4px}.layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px}.panel h3{margin:0 0 14px;font-size:18px}.fields{display:grid;grid-template-columns:1fr 1fr;gap:11px}.field{display:flex;flex-direction:column;gap:5px}.field.full{grid-column:1/-1}label{color:#c2d0da;font-size:12px;font-weight:650}input,select,textarea{width:100%;border:1px solid #3a4c5b;border-radius:10px;background:#0e171f;color:var(--text);padding:11px 12px;font:inherit;min-width:0}textarea{min-height:83px;resize:vertical}input:focus,select:focus,textarea:focus{outline:2px solid #168cff70;border-color:var(--accent)}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}.btn{border:1px solid #435665;background:#243441;color:var(--text);padding:10px 13px;border-radius:10px;font-weight:700;cursor:pointer}.btn.primary{background:var(--accent);border-color:var(--accent);color:#1b0c08}.btn.ghost{background:transparent}.btn.green{background:#163c32;border-color:#2a765e;color:#a9f3d6}.btn:hover{filter:brightness(1.1)}.small{font-size:12px;color:var(--muted)}.records{margin-top:16px}.record{padding:13px 0;border-top:1px solid var(--line);display:flex;justify-content:space-between;gap:10px;align-items:flex-start}.record:first-child{border-top:0}.record strong{display:block}.record .meta{color:var(--muted);font-size:12px;margin-top:3px}.pill{display:inline-block;font-size:11px;border-radius:999px;padding:4px 8px;background:#273744;color:#d9e7ef;margin-top:5px}.pill.paid{background:#143d32;color:#9ff0d0}.record-actions{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}.record-actions .btn{padding:7px 9px;font-size:12px}.empty{padding:20px 0;color:var(--muted);text-align:center}.footer{margin-top:18px;color:var(--muted);font-size:12px}.notice{border-left:3px solid var(--accent2);padding:10px 12px;background:#302a1e;color:#f5dfb6;border-radius:0 8px 8px 0;font-size:12px;margin-top:12px}
+@media(max-width:760px){.layout{grid-template-columns:1fr}.stats{gap:8px}.stat{padding:12px}.stat strong{font-size:20px}.hero{align-items:flex-start;flex-direction:column}.fields{grid-template-columns:1fr 1fr}}@media(max-width:420px){.fields{grid-template-columns:1fr}.field.full{grid-column:auto}.stats{grid-template-columns:1fr 1fr}.stat:last-child{grid-column:1/-1}}
+
+/* Ottimizzazione touchscreen Android/tablet */
+html{ -webkit-text-size-adjust:100%; }
+body{ padding-bottom:env(safe-area-inset-bottom); }
+button,input,select,textarea{ touch-action:manipulation; }
+input,select,textarea{font-size:16px; min-height:46px;}
+textarea{min-height:100px;}
+.btn{min-height:44px;padding:12px 15px;}
+label{font-size:13px;}
+@media (min-width:600px) and (max-width:1100px){
+  main{padding-left:18px;padding-right:18px;margin-top:18px}
+  .layout{grid-template-columns:1fr;gap:14px}
+  .fields{grid-template-columns:1fr 1fr;gap:13px}
+  .panel{padding:20px}
+  .hero{padding:20px}
+  .record-actions .btn{min-height:42px;font-size:13px}
+}
+@media (max-width:599px){
+  header{padding:14px 12px}
+  .logo{width:44px;height:44px}
+  main{padding-left:10px;padding-right:10px;margin-top:12px}
+  .hero{padding:16px;border-radius:14px}
+  .panel{padding:14px}
+  .fields{grid-template-columns:1fr}
+  .field.full{grid-column:auto}
+  .actions .btn{flex:1 1 auto}
+  .record{flex-direction:column}
+  .record-actions{justify-content:flex-start}
+}
+
+@media print{body{background:#fff!important;color:#111!important}header,.hero,.stats,.layout,.records,.footer,.no-print{display:none!important}#printArea{display:block!important;color:#111;padding:0;font:12px/1.45 Arial,sans-serif}#printArea .report-head{border-bottom:4px solid #168cff;padding:0 0 12px;margin-bottom:16px;display:flex;justify-content:space-between;align-items:flex-end;gap:20px}#printArea .report-brand{font-size:25px;font-weight:900;letter-spacing:.5px}#printArea .report-brand span{color:#168cff}#printArea .report-contact{text-align:right;font-size:11px}#printArea h2{font-size:17px;margin:18px 0 8px;color:#0872c5}#printArea .report-sub{font-size:11px;color:#555}#printArea table{width:100%;border-collapse:collapse}#printArea td,#printArea th{border:1px solid #bbb;padding:8px;text-align:left;vertical-align:top}#printArea th{width:27%;background:#f1f1f1}#printArea .disclaimer{border:1px solid #aaa;padding:10px;margin-top:20px;font-size:10px;background:#fafafa}#printArea .report-signatures{display:flex;justify-content:space-between;gap:35px;margin-top:35px}#printArea .report-signatures div{width:48%;border-top:1px solid #555;padding-top:7px}#printArea .report-footer{border-top:2px solid #168cff;margin-top:24px;padding-top:8px;font-size:10px;text-align:center;color:#444}}
+#printArea{display:none}
+</style>
+</head>
+<body>
+<header><div class="brand"><div class="logo">🏁</div><div><h1>X DIAG</h1><p>DIAGNOSI ELETTRONICA · RAPPORTI · ARCHIVIO CLIENTI</p></div></div></header>
+<main>
+<section class="hero"><div><h2>La tua officina, in tasca.</h2><p>Organizza diagnosi, clienti, rapporti e incassi direttamente dal tuo tablet Android o PC.</p></div><div class="tag">EDIZIONE INIZIALE · OFFLINE</div></section>
+<section class="stats">
+<div class="stat"><span>Lavori archiviati</span><strong id="countJobs">0</strong></div>
+<div class="stat"><span>Incassi registrati</span><strong id="income">€ 0,00</strong></div>
+<div class="stat"><span>Da incassare</span><strong id="pending">€ 0,00</strong></div>
+</section>
+
+<section class="panel" style="margin-bottom:16px">
+<h3>€ Listino servizi</h3>
+<div class="fields">
+<div class="field"><label>Diagnosi elettronica</label><div style="font-size:22px;font-weight:800;color:var(--accent2)">€ 40</div></div>
+<div class="field"><label>Lettura e analisi spia</label><div style="font-size:22px;font-weight:800;color:var(--accent2)">€ 30</div></div>
+<div class="field"><label>Controllo preacquisto con diagnosi</label><div style="font-size:22px;font-weight:800;color:var(--accent2)">€ 70</div></div>
+<div class="field"><label>Controllo mirato</label><div style="font-size:22px;font-weight:800;color:var(--accent2)">€ 20</div></div>
+</div>
+<p class="small">Prezzi indicativi modificabili nella scheda di ogni lavoro. Selezionando un servizio nel modulo, il prezzo viene compilato automaticamente; puoi cambiarlo prima di salvare.</p>
+</section>
+<div class="layout">
+<section class="panel">
+<h3 id="formTitle">＋ Nuova scheda diagnosi</h3>
+<form id="jobForm">
+<input type="hidden" id="editId">
+<div class="fields">
+<div class="field"><label for="customer">Cliente *</label><input id="customer" required placeholder="Nome e cognome"></div>
+<div class="field"><label for="phone">Telefono (facoltativo)</label><input id="phone" type="tel" placeholder="Numero cliente"></div>
+<div class="field full"><label for="email">Email cliente (per inviare il rapporto)</label><input id="email" type="email" autocomplete="email" placeholder="nome@esempio.it"></div>
+<div class="field"><label for="make">Marca auto *</label><select id="make" required><option value="">Seleziona marca</option></select></div>
+<div class="field"><label for="model">Modello auto *</label><select id="model" required disabled><option value="">Prima scegli la marca</option></select></div>
+<div class="field"><label for="plate">Targa</label><input id="plate" placeholder="AB123CD" style="text-transform:uppercase"></div>
+<div class="field"><label for="year">Anno</label><input id="year" inputmode="numeric" placeholder="Es. 2019"></div>
+<div class="field"><label for="km">Chilometraggio</label><input id="km" inputmode="numeric" placeholder="Es. 85000"></div>
+<div class="field full"><label for="service">Servizio</label><select id="service"><option value="Diagnosi elettronica">Diagnosi elettronica — €40</option><option value="Lettura e analisi spia">Lettura e analisi spia — €30</option><option value="Controllo preacquisto">Controllo preacquisto con diagnosi — €70</option><option value="Controllo mirato">Controllo mirato — €20</option><option value="Altro">Altro servizio</option></select></div>
+<div class="field"><label for="price">Prezzo (€) *</label><input id="price" type="number" min="0" step="0.01" value="40" required></div>
+<div class="field"><label for="payment">Pagamento</label><select id="payment"><option value="Da incassare">Da incassare</option><option value="Pagato">Pagato</option></select></div>
+<div class="field full"><label for="symptoms">Sintomi riferiti / spie</label><textarea id="symptoms" placeholder="Es. spia motore accesa, perdita di potenza..."></textarea></div>
+<div class="field full"><label for="codes">Codici guasto letti con Launch X431 PRO</label><textarea id="codes" placeholder="Inserisci codice e descrizione letta dallo strumento; es. P0301 — mancata accensione cilindro 1"></textarea></div>
+<div class="field full"><label for="checks">Controlli eseguiti e risultati</label><textarea id="checks" placeholder="Test effettuati, dati live, misure o verifiche..."></textarea></div>
+<div class="field full"><label for="recommend">Indicazioni / prossimi controlli</label><textarea id="recommend" placeholder="Verifiche consigliate, senza dare per certo un componente guasto prima dei test..."></textarea></div>
+</div>
+<div class="actions"><button class="btn primary" type="submit">Salva scheda</button><button class="btn ghost" type="button" id="resetBtn">Nuova / svuota</button></div>
+<p class="small">* Campi obbligatori. I dati vengono salvati in questo browser sul dispositivo in uso.</p>
+</form>
+</section>
+<section class="panel">
+<h3>▤ Archivio lavori</h3>
+<div class="fields">
+<div class="field full"><label for="search">Cerca per cliente, targa, auto o codice</label><input id="search" type="search" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Scrivi anche solo la prima lettera del cliente..."></div>
+</div>
+<div class="actions no-print"><button class="btn" id="exportBtn" type="button">Esporta archivio</button><button class="btn" id="importBtn" type="button">Importa archivio</button><input type="file" id="importFile" accept="application/json,.json" hidden></div>
+<div id="records" class="records"><div class="empty">Nessun lavoro ancora registrato.</div></div>
+<div class="notice">Importante: i codici guasto aiutano a orientare la diagnosi ma non dimostrano da soli quale componente sia difettoso. Conferma sempre con controlli tecnici e dati del veicolo.</div>
+</section>
+</div>
+<div class="footer">X DIAG · Prototipo locale. Non collegato direttamente al Launch X431 PRO e non invia automaticamente i dati a un servizio AI. Fai regolarmente un'esportazione di backup.</div>
+<section id="printArea"></section>
+</main>
+<script>
+const $=id=>document.getElementById(id);
+const KEY='xdiag.jobs.v1';
+// Elenco iniziale delle marche più comuni in Italia; i modelli dipendono dalla marca.
+const CAR_MODELS = {
+  "Alfa Romeo":["147","156","159","Giulietta","Giulia","Stelvio","MiTo","Tonale","Brera","GT"],
+  "Audi":["A1","A3","A4","A5","A6","A7","A8","Q2","Q3","Q5","Q7","Q8","TT"],
+  "BMW":["Serie 1","Serie 2","Serie 3","Serie 4","Serie 5","Serie 7","X1","X2","X3","X4","X5","X6","X7","Z4"],
+  "Citroën":["C1","C2","C3","C3 Aircross","C4","C4 Cactus","C4 Picasso","C5","C5 Aircross","Berlingo","DS3","DS4"],
+  "Cupra":["Born","Formentor","Leon","Ateca","Terramar","Tavascan"],
+  "Dacia":["Sandero","Logan","Duster","Jogger","Spring","Lodgy","Dokker"],
+  "Fiat":["500","500L","500X","Panda","Punto","Grande Punto","Tipo","Bravo","Doblò","Ducato","Fiorino","Freemont","124 Spider"],
+  "Ford":["Fiesta","Focus","Mondeo","Puma","Kuga","EcoSport","C-Max","S-Max","Galaxy","Ka","Transit","Ranger"],
+  "Honda":["Jazz","Civic","Accord","HR-V","CR-V","ZR-V","e:Ny1"],
+  "Hyundai":["i10","i20","i30","i40","Kona","Tucson","Santa Fe","Bayon","Ioniq 5","Ioniq 6"],
+  "Jeep":["Renegade","Compass","Cherokee","Grand Cherokee","Wrangler","Avenger"],
+  "Kia":["Picanto","Rio","Ceed","Stonic","Niro","Sportage","Sorento","EV3","EV6","EV9"],
+  "Lancia":["Ypsilon","Delta","Musa","Lybra","Thema","Voyager"],
+  "Land Rover":["Defender","Discovery","Discovery Sport","Freelander","Range Rover","Range Rover Evoque","Range Rover Sport","Velar"],
+  "Mazda":["Mazda2","Mazda3","Mazda6","CX-3","CX-30","CX-5","CX-60","MX-5"],
+  "Mercedes-Benz":["Classe A","Classe B","Classe C","Classe E","Classe S","CLA","CLS","GLA","GLB","GLC","GLE","GLS","Vito","Sprinter"],
+  "MINI":["Cooper","One","Clubman","Countryman","Paceman"],
+  "Mitsubishi":["Space Star","ASX","Eclipse Cross","Outlander","L200"],
+  "Nissan":["Micra","Juke","Qashqai","X-Trail","Leaf","Note","Pulsar","Navara"],
+  "Opel":["Adam","Agila","Corsa","Astra","Insignia","Meriva","Mokka","Crossland","Grandland","Zafira","Combo"],
+  "Peugeot":["107","108","206","207","208","2008","301","307","308","3008","407","408","508","5008","Partner","Rifter","Expert","Boxer"],
+  "Porsche":["911","718 Cayman","718 Boxster","Panamera","Macan","Cayenne","Taycan"],
+  "Renault":["Twingo","Clio","Captur","Mégane","Scénic","Kadjar","Austral","Arkana","Espace","Kangoo","Trafic","Master","Zoe"],
+  "Seat":["Mii","Ibiza","Leon","Arona","Ateca","Tarraco","Alhambra"],
+  "Škoda":["Fabia","Scala","Octavia","Superb","Kamiq","Karoq","Kodiaq","Enyaq"],
+  "Smart":["fortwo","forfour","#1","#3"],
+  "Subaru":["Impreza","XV","Crosstrek","Forester","Outback","BRZ","Solterra"],
+  "Suzuki":["Ignis","Swift","Baleno","Vitara","S-Cross","Jimny","Across"],
+  "Tesla":["Model 3","Model S","Model X","Model Y"],
+  "Toyota":["Aygo","Yaris","Yaris Cross","Auris","Corolla","Prius","C-HR","RAV4","Avensis","Verso","Land Cruiser","Hilux","Proace"],
+  "Volkswagen":["up!","Polo","Golf","T-Roc","T-Cross","Tiguan","Touareg","Passat","Arteon","Touran","Sharan","Caddy","Transporter","ID.3","ID.4","ID.5","ID.7"],
+  "Volvo":["C30","S40","S60","S90","V40","V60","V90","XC40","XC60","XC90"],
+  "Altro / non in elenco":["Altro modello"]
+};
+let jobs=[];
+try{jobs=JSON.parse(localStorage.getItem(KEY)||'[]');if(!Array.isArray(jobs))jobs=[]}catch(e){jobs=[]}
+const euro=n=>Number(n||0).toLocaleString('it-IT',{style:'currency',currency:'EUR'});
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function persist(){localStorage.setItem(KEY,JSON.stringify(jobs));render()}
+function resetForm(){ $('jobForm').reset();$('editId').value='';$('price').value='40';$('make').value='';fillModels('');$('formTitle').textContent='＋ Nuova scheda diagnosi'; }
+function readForm(){return {id:$('editId').value||String(Date.now())+'-'+Math.random().toString(36).slice(2,7),date:new Date().toISOString(),customer:$('customer').value.trim(),phone:$('phone').value.trim(),email:$('email').value.trim(),makeModel:[$('make').value,$('model').value].filter(Boolean).join(' '),plate:$('plate').value.trim().toUpperCase(),year:$('year').value.trim(),km:$('km').value.trim(),service:$('service').value,price:Number($('price').value),payment:$('payment').value,symptoms:$('symptoms').value.trim(),codes:$('codes').value.trim(),checks:$('checks').value.trim(),recommend:$('recommend').value.trim()}}
+$('service').addEventListener('change',()=>{const p={'Diagnosi elettronica':40,'Lettura e analisi spia':30,'Controllo preacquisto':70,'Controllo mirato':20};if(p[$('service').value]!==undefined)$('price').value=p[$('service').value]});
+$('jobForm').addEventListener('submit',e=>{e.preventDefault();const j=readForm();const i=jobs.findIndex(x=>x.id===j.id);if(i>=0)jobs[i]=j;else jobs.unshift(j);persist();resetForm()});
+$('resetBtn').addEventListener('click',resetForm);
+$('search').addEventListener('input',render);
+function render(){ $('countJobs').textContent=jobs.length;$('income').textContent=euro(jobs.filter(j=>j.payment==='Pagato').reduce((s,j)=>s+Number(j.price||0),0));$('pending').textContent=euro(jobs.filter(j=>j.payment!=='Pagato').reduce((s,j)=>s+Number(j.price||0),0));
+const normalizeSearch=v=>String(v??'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLocaleLowerCase('it-IT').trim();const q=normalizeSearch($('search').value);const found=jobs.filter(j=>{const haystack=[j.customer,j.phone,j.makeModel,j.plate,j.codes,j.service].map(normalizeSearch).join(' ');return q===''||haystack.includes(q)});
+$('records').innerHTML=found.length?found.map(j=>`<div class="record"><div><strong>${esc(j.customer)} · ${esc(j.makeModel)}</strong><div class="meta">${esc(j.plate||'Targa non indicata')} · ${new Date(j.date).toLocaleDateString('it-IT')} · ${euro(j.price)}</div><span class="pill ${j.payment==='Pagato'?'paid':''}">${esc(j.payment)}</span></div><div class="record-actions"><button class="btn" onclick="printReport('${j.id}')">Rapporto</button><button class="btn" onclick="emailReport('${j.id}')">Invia email</button><button class="btn" onclick="editJob('${j.id}')">Modifica</button><button class="btn" onclick="togglePaid('${j.id}')">${j.payment==='Pagato'?'Da incassare':'Segna pagato'}</button><button class="btn" onclick="deleteJob('${j.id}')">Elimina</button></div></div>`).join(''):'<div class="empty">Nessun risultato.</div>';
+}
+window.editJob=id=>{const j=jobs.find(x=>x.id===id);if(!j)return;for(const k of ['customer','phone','email','plate','year','km','service','price','payment','symptoms','codes','checks','recommend'])$(k).value=j[k]??'';
+const savedParts=(j.makeModel||'').split(' ');
+const savedMake=Object.keys(CAR_MODELS).find(m=>(j.makeModel||'').startsWith(m+' '))||'';
+$('make').value=savedMake;fillModels(savedMake);
+$('model').value=savedMake?(j.makeModel||'').slice(savedMake.length).trim():'';
+if(!$('model').value && j.makeModel){const custom=new Option(j.makeModel.replace(savedMake,'').trim()||j.makeModel,j.makeModel.replace(savedMake,'').trim()||j.makeModel);$('model').add(custom);$('model').value=custom.value;}$('editId').value=j.id;$('formTitle').textContent='✎ Modifica scheda';window.scrollTo({top:0,behavior:'smooth'})};
+window.togglePaid=id=>{const j=jobs.find(x=>x.id===id);if(j){j.payment=j.payment==='Pagato'?'Da incassare':'Pagato';persist()}};
+window.deleteJob=id=>{if(confirm('Eliminare questa scheda?')){jobs=jobs.filter(j=>j.id!==id);persist()}};
+window.emailReport=id=>{const j=jobs.find(x=>x.id===id);if(!j)return;if(!j.email){alert('Inserisci prima l’email del cliente nella scheda, poi salva le modifiche.');return}const subject=`Rapporto di diagnosi auto - ${j.makeModel||'veicolo'}${j.plate?' - '+j.plate:''}`;const body=`Buongiorno ${j.customer||''},\n\nin allegato trova il rapporto relativo al controllo del veicolo.\n\nVeicolo: ${j.makeModel||'Non indicato'}\nTarga: ${j.plate||'Non indicata'}\nData controllo: ${new Date(j.date).toLocaleDateString('it-IT')}\nServizio: ${j.service||'Non indicato'}\n\nPer qualsiasi chiarimento resto a disposizione.\n\nAlessandro Virdis\nX DIAG\nTelefono / WhatsApp: 349 813 2170\n\nNota: ricordarsi di allegare il rapporto PDF salvato dalla funzione “Rapporto”.`;window.open(`https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(j.email)}&su=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`,'_blank','noopener');};
+window.printReport=id=>{const j=jobs.find(x=>x.id===id);if(!j)return;const row=(label,val)=>`<tr><th>${label}</th><td>${esc(val||'Non indicato').replace(/\n/g,'<br>')}</td></tr>`;$('printArea').innerHTML=`<div class="report-head"><div><div class="report-brand">DIAGNOSI <span>AUTO</span> AI</div><div class="report-sub">DIAGNOSI ELETTRONICA · RAPPORTO CLIENTE</div></div><div class="report-contact"><b>Alessandro Virdis</b><br>Telefono / WhatsApp: <b>349 813 2170</b><br>Servizio su appuntamento</div></div><h1>RAPPORTO DI DIAGNOSI VEICOLO</h1><p class="report-sub">Numero rapporto: ${esc(j.id)} &nbsp;·&nbsp; Data: ${new Date(j.date).toLocaleDateString('it-IT')}</p><h2>DATI CLIENTE E VEICOLO</h2><table>${row('Cliente',j.customer)}${row('Telefono cliente',j.phone)}${row('Email cliente',j.email)}${row('Marca e modello',j.makeModel)}${row('Targa',j.plate)}${row('Anno / chilometraggio',(j.year||'—')+' / '+(j.km?j.km+' km':'—'))}${row('Servizio richiesto',j.service)}</table><h2>RISULTATI DEL CONTROLLO</h2><table>${row('Sintomi / spie segnalate',j.symptoms)}${row('Codici guasto rilevati',j.codes)}${row('Controlli effettuati',j.checks)}${row('Indicazioni / prossimi controlli',j.recommend)}</table><h2>RIEPILOGO ECONOMICO</h2><table>${row('Importo servizio',euro(j.price))}${row('Stato pagamento',j.payment)}</table><div class="disclaimer"><b>Nota tecnica importante:</b> il rapporto documenta i dati e i controlli inseriti dall'operatore alla data indicata. Un codice guasto non identifica necessariamente, da solo, il componente difettoso. Le cause devono essere confermate con prove e verifiche appropriate. Il controllo elettronico non sostituisce una riparazione, una perizia ufficiale o una certificazione del costruttore. Gli interventi e le conclusioni dipendono dai controlli effettivamente eseguiti.</div><div class="report-signatures"><div>Firma operatore</div><div>Firma cliente per presa visione</div></div><div class="report-footer">DIAGNOSI AUTO AI · Alessandro Virdis · 349 813 2170<br>La tua auto, la nostra diagnosi.</div>`;window.print()};
+$('exportBtn').addEventListener('click',()=>{const blob=new Blob([JSON.stringify({app:'X DIAG',version:1,exportedAt:new Date().toISOString(),jobs},null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='xdiag-backup.json';a.click();URL.revokeObjectURL(a.href)});
+$('importBtn').addEventListener('click',()=>$('importFile').click());
+$('importFile').addEventListener('change',async e=>{const f=e.target.files[0];if(!f)return;try{const data=JSON.parse(await f.text());const incoming=Array.isArray(data)?data:data.jobs;if(!Array.isArray(incoming))throw Error('Formato non riconosciuto');if(confirm('Importare '+incoming.length+' schede? Le schede con lo stesso ID saranno aggiornate.')){for(const j of incoming){if(!j.id)j.id=String(Date.now())+Math.random();const i=jobs.findIndex(x=>x.id===j.id);if(i>=0)jobs[i]=j;else jobs.push(j)}persist();alert('Importazione completata.')} }catch(err){alert('File non valido o non leggibile.')}e.target.value=''});
+function fillModels(make, selected=''){
+  const sel=$('model');sel.innerHTML='';
+  if(!make){sel.add(new Option('Prima scegli la marca',''));sel.disabled=true;return}
+  sel.disabled=false;sel.add(new Option('Seleziona modello',''));
+  (CAR_MODELS[make]||[]).forEach(m=>sel.add(new Option(m,m)));
+  sel.add(new Option('Altro / inserisci modello','__custom__'));
+  if(selected && [...sel.options].some(o=>o.value===selected))sel.value=selected;
+}
+function ensureCustomModel(){
+  if($('model').value==='__custom__'){
+    const custom=prompt('Inserisci il modello del veicolo:');
+    if(custom && custom.trim()){
+      const opt=new Option(custom.trim(),custom.trim());
+      $('model').add(opt);$('model').value=custom.trim();
+    }else $('model').value='';
+  }
+}
+Object.keys(CAR_MODELS).sort((a,b)=>a.localeCompare(b,'it')).forEach(m=>$('make').add(new Option(m,m)));
+$('make').addEventListener('change',()=>fillModels($('make').value));
+$('model').addEventListener('change',ensureCustomModel);
+if('serviceWorker' in navigator && location.protocol.startsWith('http'))navigator.serviceWorker.register('./sw.js').catch(()=>{});
+render();
+</script>
+</body></html>

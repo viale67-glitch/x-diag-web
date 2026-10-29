@@ -58,7 +58,7 @@ label{font-size:13px;}
 <div class="stat"><span>Da incassare</span><strong id="pending">€ 0,00</strong></div>
 </section>
 
-<section class="panel" style="margin-bottom:16px">
+<section class="panel" style="margin-bottom:16px;display:none">
 <h3>€ Listino servizi</h3>
 <div class="fields">
 <div class="field"><label>Diagnosi elettronica</label><div style="font-size:22px;font-weight:800;color:var(--accent2)">€ 40</div></div>
@@ -105,7 +105,17 @@ label{font-size:13px;}
 </section>
 </div>
 <div class="footer">X DIAG · Prototipo locale. Non collegato direttamente al Launch X431 PRO e non invia automaticamente i dati a un servizio AI. Fai regolarmente un'esportazione di backup.</div>
-<section id="printArea"></section>
+<section class="panel" style="margin-bottom:16px">
+<h3>€ Listino servizi</h3>
+<div class="fields">
+<div class="field"><label>Diagnosi elettronica</label><div style="font-size:22px;font-weight:800;color:var(--accent2)">€ 40</div></div>
+<div class="field"><label>Lettura e analisi spia</label><div style="font-size:22px;font-weight:800;color:var(--accent2)">€ 30</div></div>
+<div class="field"><label>Controllo preacquisto con diagnosi</label><div style="font-size:22px;font-weight:800;color:var(--accent2)">€ 70</div></div>
+<div class="field"><label>Controllo mirato</label><div style="font-size:22px;font-weight:800;color:var(--accent2)">€ 20</div></div>
+</div>
+<p class="small">Prezzi indicativi modificabili nella scheda di ogni lavoro. Selezionando un servizio nel modulo, il prezzo viene compilato automaticamente; puoi cambiarlo prima di salvare.</p>
+</section>
+  <section id="printArea"></section>
 </main>
 <script>
 const $=id=>document.getElementById(id);
